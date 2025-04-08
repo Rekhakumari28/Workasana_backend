@@ -15,8 +15,8 @@ const authorizationUser = asyncHandler( (req,res,next)=>{
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
       req.user = decodedToken;
       next();
-    } catch {
-      res.status(403).json({ message: "Invalid Token" });
+    } catch(error) {
+      res.status(403).json({ message: "Invalid Token" ,error});
     }
 })
 
@@ -68,7 +68,7 @@ const userLogin = asyncHandler(async(req,res)=>{
         res.json({token})
 
     } catch (error) {
-        res.status(500).json({error: "Failed to login."})
+        res.status(500).json({error: "Failed to login.",error})
     }
 })
 
