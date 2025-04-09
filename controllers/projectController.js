@@ -17,14 +17,9 @@ const addProject = asyncHandler(async(req,res)=>{
 //getProject
 
 const getProject = asyncHandler(async(req,res)=>{
-    const {status} = req.body
-    let filter={}
-
-    if(status){
-        filter.status = status
-    }
+   
     try {
-        const project = await Project.find(filter)
+        const project = await Project.find()
         res.json(project)
         
     } catch (error) {
