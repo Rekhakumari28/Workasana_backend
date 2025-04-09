@@ -9,7 +9,7 @@ const addProject = asyncHandler(async(req,res)=>{
         const saveProject = await project.save()
         res.status(201).json({message:"New Project created.", saveProject})
     } catch (error) {
-        res.status(500).json({error: "Failed to create new project."})
+        res.status(500).json({error: "Failed to create new project.", error})
     }
 })
 
@@ -28,7 +28,7 @@ const getProject = asyncHandler(async(req,res)=>{
         res.json(project)
         
     } catch (error) {
-        res.status(500).json({error: "Failed to get project."})
+        res.status(500).json({error: "Failed to get project.",error})
     }
 })
 
