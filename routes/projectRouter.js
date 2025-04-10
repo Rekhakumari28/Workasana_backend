@@ -5,7 +5,6 @@ const {addProject , getProject, updateProject, getProjectById, deleteProject} = 
 
 router.post("/",addProject)
 router.get("/",getProject)
-
 router.get("/:id", getProjectById);
 router.put("/:id", updateProject);
 router.delete("/:id", deleteProject);
