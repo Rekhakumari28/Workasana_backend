@@ -20,8 +20,6 @@ const authorizationUser = asyncHandler( (req,res,next)=>{
     }
 })
 
-
-
 //addUser
 const registerUser = asyncHandler(async(req,res)=>{    
         const {name,email,password} = req.body
@@ -43,9 +41,7 @@ const registerUser = asyncHandler(async(req,res)=>{
         } catch (error) {
             res.status(500).json({error: "Failed to register.", error})
         }        
-    
 })
-
 
 //getUser
 
