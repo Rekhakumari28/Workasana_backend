@@ -53,9 +53,10 @@ const userLogin = asyncHandler(async(req,res)=>{
       .json({ message: "All fields are required." });
   }
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email:email });
     
     if (!user) return res.status(404).json({ message: "User Not Found!" });
+    
     const isPasswordValid = await bcrypt.compare(password, user.password);
    
     if (!isPasswordValid)
@@ -68,7 +69,7 @@ const userLogin = asyncHandler(async(req,res)=>{
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1h",
+        expiresIn: "24h",
       }
     );
    
