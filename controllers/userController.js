@@ -46,26 +46,36 @@ const registerUser = asyncHandler(async(req,res)=>{
 //getUser
 
 const userLogin = asyncHandler(async(req,res)=>{
-    const { email, password} = req.body
+  const { email, password } = req.body;
+  if (!email || !password) {
+    res
+      .status(400)
+      .json({ message: "All fields are required." });
+  }
+  try {
+    const user = await User.findOne({ email });
+    
+    if (!user) return res.status(404).json({ message: "User Not Found!" });
+    const isPasswordValid = await bcrypt.compare(password, user.password);
    
-    if(!email && !password){
-        res.status(400).json({error:"All fields are required."})
-    }
-    try {
-        const user = await User.findOne({email})
-        if(!user){
-            res.status(404).json({error: "User not found."})
-        }
-        const passwordValid = await bcrypt.compare(password, user.password) 
-        if(!passwordValid){
-            res.status(401).json({error: "Invalid password."})
-        }
-        const token =jwt.sign({id:user._id, email: user.email},process.env.JWT_SECRET,{expiresIn:"1h"})
-        res.json({token})
+    if (!isPasswordValid)
+      return res.status(401).json({ message: "Invalid Password." });
 
-    } catch (error) {
-        res.status(500).json({error: "Failed to login.",error})
-    }
+    const token = jwt.sign(
+      {
+        id: user._id,
+        email: user.email,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+   
+    res.json({ token });
+  } catch (err) {
+    res.status(500).json({ message: "Login Failed. ", error: err.message });
+  }
 })
 
 const getAllUser = asyncHandler(async (req, res) => {
@@ -78,18 +88,4 @@ const getAllUser = asyncHandler(async (req, res) => {
   })
 
 
-  const getProfile = asyncHandler(async (req,res)=>{
-    try {
-        const user = await User.findById(req.user.id);
-        if (!user) {
-          return res.status(404).json({ message: "User not found." });
-        }
-        res.status(200).json(user);
-      } catch (err) {
-        res
-          .status(404)
-          .json({ message: "Failed to fetch user data.", error: err.message });
-      }
-  })
-
-module.exports = {authorizationUser ,registerUser, userLogin ,getAllUser ,getProfile}
+module.exports = {authorizationUser ,registerUser, userLogin ,getAllUser }
