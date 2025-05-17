@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const User = require('./../models/user.model.js')
-
+const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt')
 
 //addUser
@@ -71,5 +71,19 @@ const getAllUser = asyncHandler(async (req, res) => {
     }
   })
 
+  const userProfile = asyncHandler(async (req,res)=>{
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+          return res.status(404).json({ message: "User not found." });
+        }
+        res.status(200).json(user);
+      } catch (err) {
+        res
+          .status(404)
+          .json({ message: "Failed to fetch user data.", error: err.message });
+      }
+  })
 
-module.exports = {authorizationUser ,registerUser, userLogin ,getAllUser }
+
+module.exports = {authorizationUser ,registerUser, userLogin ,getAllUser, userProfile }
