@@ -1,24 +1,7 @@
 const asyncHandler = require('express-async-handler')
-
 const User = require('./../models/user.model.js')
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
 
-const authorizationUser = asyncHandler( (req,res,next)=>{
-    const token = req.headers['authorization']
-    console.log("Token: ",token)
-    if(!token){
-        return res.status(401).json({message:"Access Denied."})
-    }
-    
-    try {
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decodedToken;
-      next();
-    } catch(error) {
-      res.status(403).json({ message: "Invalid Token" ,error});
-    }
-})
+const bcrypt = require('bcrypt')
 
 //addUser
 const registerUser = asyncHandler(async(req,res)=>{    

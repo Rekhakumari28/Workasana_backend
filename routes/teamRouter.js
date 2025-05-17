@@ -3,11 +3,11 @@ const router = express.Router()
 
 const {addTeam , getTeam, getTeamById, updateTeam, addMembers, deleteTeam} = require("./../controllers/teamController.js")
 
-router.post("/", addTeam)
-router.get("/",getTeam)
+router.post("/",authorizationUser, addTeam)
+router.get("/",authorizationUser , getTeam)
 
-router.get("/:id", getTeamById);
-router.put("/:id", updateTeam);
-router.put("/member/:id", addMembers);
-router.delete("/:id", deleteTeam);
+router.get("/:id",authorizationUser, getTeamById);
+router.put("/:id",authorizationUser, updateTeam);
+router.put("/member/:id",authorizationUser, addMembers);
+router.delete("/:id",authorizationUser, deleteTeam);
 module.exports = router

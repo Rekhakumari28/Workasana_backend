@@ -3,10 +3,10 @@ const router = express.Router()
 
 const  {addTag ,getAllTag, getTagById, updateTag, deleteTag} = require("./../controllers/tagController.js")
 
-router.post("/",addTag)
-router.get("/",getAllTag)
-router.get("/:tagId",getTagById)
-router.put("/:tagId",updateTag)
-router.delete("/:tagId",deleteTag)
+router.post("/", authorizationUser,addTag)
+router.get("/", authorizationUser,getAllTag)
+router.get("/:tagId", authorizationUser,getTagById)
+router.put("/:tagId",authorizationUser ,updateTag)
+router.delete("/:tagId",authorizationUser,deleteTag)
 
 module.exports = router
