@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
+const { authorizationUser } = require('../middleware/authMiddleware.js')
 const  {addTag ,getAllTag, getTagById, updateTag, deleteTag} = require("./../controllers/tagController.js")
 
 router.post("/", authorizationUser,addTag)

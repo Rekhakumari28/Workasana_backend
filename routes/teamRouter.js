@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
+const { authorizationUser } = require('../middleware/authMiddleware.js')
 const {addTeam , getTeam, getTeamById, updateTeam, addMembers, deleteTeam} = require("./../controllers/teamController.js")
 
 router.post("/",authorizationUser, addTeam)

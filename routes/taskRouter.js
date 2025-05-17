@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
+const { authorizationUser } = require('../middleware/authMiddleware.js')
 const  {addTask , getTask, getTaskById, updateTask, deleteTask} = require("./../controllers/taskController.js")
 
 router.post("/",authorizationUser,addTask)

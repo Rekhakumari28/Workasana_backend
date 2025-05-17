@@ -86,4 +86,4 @@ const getAllUser = asyncHandler(async (req, res) => {
   })
 
 
-module.exports = {authorizationUser ,registerUser, userLogin ,getAllUser, userProfile }
+module.exports = {registerUser, userLogin ,getAllUser, userProfile }
