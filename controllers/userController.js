@@ -1,10 +1,10 @@
-const asyncHandler = require('express-async-handler')
+
 const User = require('./../models/user.model.js')
 const jwt = require("jsonwebtoken")
 const bcrypt = require('bcrypt')
 
 //addUser
-const registerUser = asyncHandler(async(req,res)=>{    
+exports.registerUser = async(req,res)=>{    
         const {name,email,password} = req.body
 
         if(!name && !email && !password){
@@ -20,23 +20,18 @@ const registerUser = asyncHandler(async(req,res)=>{
             const newUser = new User({name, email, password:hashedPassword})
 
             const saveUser = await newUser.save()
-            res.status(201).json({message:"New User registerd.", user: saveUser})
+            res.status(201).json({message:"New user registerd.", user: saveUser})
         } catch (error) {
             res.status(500).json({error: "Failed to register.", error})
         }        
-})
+}
 
 //getUser
 
-const userLogin = asyncHandler(async(req,res)=>{
+exports.userLogin = async(req,res)=>{
   const { email, password } = req.body;
-  if (!email || !password) {
-    res
-      .status(400)
-      .json({ message: "All fields are required." });
-  }
   try {
-    const user = await User.findOne({ email:email });
+    const user = await User.findOne({ email });
     
     if (!user) return res.status(404).json({ message: "User Not Found!" });
     
@@ -48,30 +43,37 @@ const userLogin = asyncHandler(async(req,res)=>{
     const token = jwt.sign(
       {
         id: user._id,
-        email: user.email,
       },
       process.env.JWT_SECRET,
       {
         expiresIn: "24h",
       }
     );
-   
-    res.json({ token });
+      
+    const { password: _, ...userWithoutPassword } = user.toObject();
+
+    res.json({ token, user: userWithoutPassword });
+    
   } catch (err) {
-    res.status(500).json({ message: "Login Failed. ", error: err.message });
+    res.status(500).json({ message: "Login Failed. ", err });
   }
-})
+}
 
-const getAllUser = asyncHandler(async (req, res) => {
+exports.getAllUser = async (req, res) => {
     try {
-      const Users = await User.find();
-      res.status(200).json(Users);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
+      const users = await User.find();
+        if (users) {
+      return res.status(200).json(users);
+    } else {
+      return res.status(400).json({ message: "Failed to fetch users" });
     }
-  })
+    
+    } catch (err) {
+      res.status(500).json({ message:"Internal server error", err });
+    }
+  }
 
-  const userProfile = asyncHandler(async (req,res)=>{
+ exports.userProfile = async (req,res)=>{
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
@@ -83,7 +85,4 @@ const getAllUser = asyncHandler(async (req, res) => {
           .status(404)
           .json({ message: "Failed to fetch user data.", error: err.message });
       }
-  })
-
-
-module.exports = {registerUser, userLogin ,getAllUser, userProfile }
+  }

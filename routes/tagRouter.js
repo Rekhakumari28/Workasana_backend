@@ -1,12 +1,12 @@
-const express = require('express')
-const router = express.Router()
-const { authorizationUser } = require('../middleware/authMiddleware.js')
-const  {addTag ,getAllTag, getTagById, updateTag, deleteTag} = require("./../controllers/tagController.js")
+const express = require("express");
+const router = express.Router();
+const authorizationUser = require("../middleware/authMiddleware.js");
+const tagController = require("./../controllers/tagController.js");
 
-router.post("/", authorizationUser,addTag)
-router.get("/", authorizationUser,getAllTag)
-router.get("/:tagId", authorizationUser,getTagById)
-router.put("/:tagId",authorizationUser ,updateTag)
-router.delete("/:tagId",authorizationUser,deleteTag)
+router.post("/", authorizationUser, tagController.addTag);
+router.get("/", authorizationUser, tagController.getAllTag);
+router.get("/:tagId", authorizationUser, tagController.getTagById);
+router.put("/:tagId", authorizationUser, tagController.updateTag);
+router.delete("/:tagId", authorizationUser, tagController.deleteTag);
 
-module.exports = router
+module.exports = router;

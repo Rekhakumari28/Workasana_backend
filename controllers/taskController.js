@@ -1,9 +1,7 @@
-const asyncHandler = require('express-async-handler')
-
 const Task = require('./../models/task.model.js')
 
 //addTask
-const addTask = asyncHandler(async(req,res)=>{
+exports.addTask = async(req,res)=>{
     try {
         const task = new Task(req.body)
     const saveTask = await task.save()
@@ -13,11 +11,11 @@ const addTask = asyncHandler(async(req,res)=>{
     } catch (error) {
         res.status(500).json({error: "Failed to create new task.", error})
     }
-})
+}
 
 //getTask
 
-const getTask = asyncHandler(async(req,res)=>{
+exports.getTask = async(req,res)=>{
     const {status, prioritySort, dateSort} = req.query
 
 let filter = {}
@@ -65,11 +63,11 @@ if(dateSort){
     } catch (error) {
         res.status(500).json({error: "Failed to get task.", error})
     }
-})
+}
 
 //getTaskById
 
-const getTaskById = asyncHandler(async (req, res) => {
+exports.getTaskById = async (req, res) => {
     try {
       const taskById = await Task.findById(req.params.id)
         .populate("project")
@@ -79,11 +77,11 @@ const getTaskById = asyncHandler(async (req, res) => {
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
-  })
+  }
 
 //   updateTask
 
-const updateTask = asyncHandler(async (req, res) => {
+exports.updateTask = async (req, res) => {
     try {
       const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
@@ -92,17 +90,15 @@ const updateTask = asyncHandler(async (req, res) => {
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
-  })
+  }
 
   //deleteTask
 
-  const deleteTask = asyncHandler(async (req, res) => {
+exports.deleteTask = async (req, res) => {
     try {
       const deletedTask = await Task.findByIdAndDelete(req.params.id);
       res.status(200).json({ deletedTask });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
-  })
-
-module.exports = {addTask , getTask, getTaskById, updateTask, deleteTask}
+  }

@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const { authorizationUser } = require('../middleware/authMiddleware.js')
-const {addTeam , getTeam, getTeamById, updateTeam, addMembers, deleteTeam} = require("./../controllers/teamController.js")
+const authorizationUser = require('../middleware/authMiddleware.js')
+const teamController = require("./../controllers/teamController.js")
 
-router.post("/",authorizationUser, addTeam)
-router.get("/",authorizationUser , getTeam)
+router.post("/",authorizationUser, teamController.addTeam)
+router.get("/",authorizationUser , teamController.getTeam)
 
-router.get("/:id",authorizationUser, getTeamById);
-router.put("/:id",authorizationUser, updateTeam);
-router.put("/member/:id",authorizationUser, addMembers);
-router.delete("/:id",authorizationUser, deleteTeam);
+router.get("/:id",authorizationUser, teamController.getTeamById);
+router.put("/:id",authorizationUser, teamController.updateTeam);
+router.put("/member/:id",authorizationUser, teamController.addMembers);
+router.delete("/:id",authorizationUser, teamController.deleteTeam);
+
 module.exports = router
