@@ -29,15 +29,16 @@ const tagRouter = require("./routes/tagRouter.js")
 const teamRouter = require("./routes/teamRouter.js")
 const userRouter = require("./routes/userRouter.js")
 const taskRouter = require("./routes/taskRouter.js")
+const memberRouter = require("./routes/memberRouter.js")
 
 //route
-app.use("/api/users",userRouter) 
 
 app.use("/api/projects", projectRouter)
 app.use("/api/tags",tagRouter)
 app.use("/api/teams",teamRouter)
-
+app.use("/api/users",userRouter) 
 app.use("/api/tasks", taskRouter)
+app.use("/api/members", memberRouter)
 
 
 //port
