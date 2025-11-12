@@ -12,8 +12,6 @@ const jwt = require('jsonwebtoken')
 
 const app = express()
 
-const port = process.env.PORT
-
 const corsOptions = {
     origin: "*",
     credentials: true,
@@ -28,23 +26,16 @@ initialiseDatabase()
 
 const JWT_SECRET = "workasnaFpAssignment"
 
-app.listen(port, () => {
-    console.log("Server is up and running on", port)
-})
-
 app.get("/", async (req, res) => {
-    res.send("Hello!")
+    res.send("Workasana backend is running successfully!")
 })
-
-
-
 
 //Register
 app.post("/auth/signup", async (req, res) => {
     try {
         const {email} = req.body
         const existingUser = await User.findOne({email})
-console.log(req.body)
+
         if(existingUser) {
             return res.status(400).json({message: "Email already exists, please Login"})
         }
@@ -434,5 +425,10 @@ app.get("/report/closed-tasks", async (req, res) => {
     }
 })
 
+
+const port = process.env.PORT
+app.listen(port, () => {
+    console.log("Server is up and running on", port)
+})
 
    
